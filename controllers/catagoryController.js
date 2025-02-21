@@ -70,7 +70,7 @@ const catagoryUpdate = async (req, res) => {
 
 const getCatagory = async (req, res) => {
     try {
-      const { page = 1, limit = 3 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
+      const { page = 1, limit = 1 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
       const skip = (page - 1) * limit; // Skip değeri, hangi ürünlerden başlayacağımızı hesaplıyor
   
       const allQolbaq = await CatagoryModel.find()
