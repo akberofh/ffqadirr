@@ -68,13 +68,27 @@ const qolbaqUpdate = async (req, res) => {
 
 const getQolbaq = async (req, res) => {
   try {
-    const allQolbaq = await QolbaqModel.find();
-    res.json({ allQolbaq });
+    const { page = 1, limit = 5 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
+    const skip = (page - 1) * limit; // Skip değeri, hangi ürünlerden başlayacağımızı hesaplıyor
+
+    const allQolbaq = await QolbaqModel.find()
+      .skip(skip) // Skip kullanarak başlamak istediğimiz veriyi belirliyoruz
+      .limit(limit); // Belirtilen limit kadar ürün getiriyoruz
+
+    const totalQolbaqCount = await QolbaqModel.countDocuments(); // Toplam kayıt sayısını alıyoruz
+    const totalPages = Math.ceil(totalQolbaqCount / limit); // Toplam sayfa sayısını hesaplıyoruz
+
+    res.json({
+      allQolbaq,
+      totalPages,
+      currentPage: page,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 const getByIdQolbaq = async (req, res) => {
   const { id } = req.params;

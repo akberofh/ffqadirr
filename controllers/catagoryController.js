@@ -73,13 +73,27 @@ const catagoryUpdate = async (req, res) => {
 
 const getCatagory = async (req, res) => {
     try {
-        const allCatagory = await CatagoryModel.find();
-        res.json({ allCatagory });
+      const { page = 1, limit = 5 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
+      const skip = (page - 1) * limit; // Skip değeri, hangi kategorilerden başlayacağımızı hesaplıyor
+  
+      const allCatagory = await CatagoryModel.find()
+        .skip(skip) // Skip kullanarak başlamak istediğimiz veriyi belirliyoruz
+        .limit(limit); // Belirtilen limit kadar kategori getiriyoruz
+  
+      const totalCatagoryCount = await CatagoryModel.countDocuments(); // Toplam kategori sayısını alıyoruz
+      const totalPages = Math.ceil(totalCatagoryCount / limit); // Toplam sayfa sayısını hesaplıyoruz
+  
+      res.json({
+        allCatagory,
+        totalPages,
+        currentPage: page,
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal Server Error" });
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-};
+  };
+  
 
 const getByIdCatagory = async (req, res) => {
     const { id } = req.params;
