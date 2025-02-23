@@ -22,19 +22,23 @@ const allowedOrigins = [
   'https://f-fqadir-adminpanel.vercel.app'
 ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    console.log('Gelen Origin:', origin); // Gelen isteği logla
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS policy hatası: Erişim engellendi.'));
-    }
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-}));
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log('Gelen Origin:', origin); // Debug için gelen isteği logla
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
 
 // Middleware
 app.use(express.json());
