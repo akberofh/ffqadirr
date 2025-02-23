@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'https://www.ffqadir.az',
   'https://ffqadir.az',
+  'https://www.ffqadir.az/fan.html',
   'https://f-fqadir-adminpanel.vercel.app'
 ];
 
