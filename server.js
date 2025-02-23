@@ -24,6 +24,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
+    console.log('Gelen Origin:', origin); // Gelen isteği logla
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -32,11 +33,8 @@ app.use(cors({
   },
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
-
-// OPTIONS Preflight Middleware (CORS için gereklidir)
-app.options('*', cors());
 
 // Middleware
 app.use(express.json());
