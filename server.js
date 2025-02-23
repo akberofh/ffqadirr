@@ -23,13 +23,15 @@ const allowedOrigins = [
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  console.log('Gelen Origin:', origin); // Debug için gelen isteği logla
+  console.log('Gelen Origin:', origin); // Gelen isteği terminalde görebilmek için log atalım
 
   if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin); // Gelen origin neyse ona izin ver
+    res.setHeader('Access-Control-Allow-Origin', origin); // Gelen isteğe uygun Origin ayarla
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  } else {
+    console.log('CORS engellendi:', origin); // Desteklenmeyen originleri terminale yazdıralım
   }
 
   if (req.method === 'OPTIONS') {
