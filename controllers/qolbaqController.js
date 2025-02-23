@@ -68,7 +68,7 @@ const qolbaqUpdate = async (req, res) => {
 
 const getQolbaq = async (req, res) => {
   try {
-    const { page = 1, limit = 50 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
+    const { page = 1, limit = 20 } = req.query; // Sayfa numarası ve limit parametrelerini alıyoruz, varsayılan olarak 1 ve 5
     const skip = (page - 1) * limit; // Skip değeri, hangi ürünlerden başlayacağımızı hesaplıyor
 
     const allQolbaq = await QolbaqModel.find()
